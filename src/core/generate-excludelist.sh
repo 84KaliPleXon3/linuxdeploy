@@ -8,6 +8,8 @@
 #
 # Changed to use C++ standard library containers instead of Qt ones.
 
+exit 0
+
 set -e
 
 filename=excludelist.h
@@ -18,7 +20,7 @@ log_prefix="-- [$(basename $0)]"
 
 echo "$log_prefix downloading excludelist from GitHub"
 url="https://raw.githubusercontent.com/probonopd/AppImages/master/excludelist"
-blacklisted=("foo_bar.so")
+blacklisted=($(wget --quiet "$url" -O - | sed 's|#.*||g' | sort | uniq))
 
 # sanity check
 if [ "$blacklisted" == "" ]; then
